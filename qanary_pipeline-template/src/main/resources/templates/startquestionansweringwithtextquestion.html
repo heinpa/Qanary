@@ -100,7 +100,7 @@
 
 			render() {
 				if (this.state.fetched) {
-					// don't perform another backend call
+					// don't perform another call
 					console.log("data already fetched")
 				} else {
 					this.callBackend();
@@ -108,7 +108,7 @@
 
 				}
 				// display only the number of annotations
-				return "(created "+this.state.count+" annotations)"
+				return "(created annotations: "+this.state.count+")"
 			}
 		}
 

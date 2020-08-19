@@ -53,6 +53,7 @@ public class QanaryQuestionAnsweringController {
 	private final QanaryQuestionController qanaryQuestionController;
 	private final QanaryComponentRegistrationChangeNotifier myComponentNotifier;
 	private final QanaryPipelineConfiguration myQanaryPipelineConfiguration;
+	private final QanaryPipelineAnnotationController myQanaryPipelineAnnotationController;
 	private TriplestoreEndpointIdentifier myTriplestoreEndpointIdentifier;
 
 	// Set this to allow browser requests from other websites
@@ -70,11 +71,13 @@ public class QanaryQuestionAnsweringController {
 			final QanaryQuestionController qanaryQuestionController, //
 			final QanaryComponentRegistrationChangeNotifier myComponentNotifier, //
 			final QanaryPipelineConfiguration myQanaryPipelineConfiguration,
+			final QanaryPipelineAnnotationController myQanaryPipelineAnnotationController, //
 			final TriplestoreEndpointIdentifier myTriplestoreEndpointIdentifier ) {
 		this.qanaryConfigurator = qanaryConfigurator;
 		this.qanaryQuestionController = qanaryQuestionController;
 		this.myComponentNotifier = myComponentNotifier;
 		this.myQanaryPipelineConfiguration = myQanaryPipelineConfiguration;
+		this.myQanaryPipelineAnnotationController = myQanaryPipelineAnnotationController;
 		this.myTriplestoreEndpointIdentifier = myTriplestoreEndpointIdentifier;
 	}
 
@@ -428,60 +431,6 @@ public class QanaryQuestionAnsweringController {
 				myQanaryMessage.getInGraph(), myQanaryMessage.getOutGraph(), qanaryConfigurator);
 
 		return myRun;
-	}
-
-	/**
-	 * get the number of annotations created by a component
-	 */
-	@RequestMapping(value = "/numberOfAnnotations/", method = RequestMethod.GET, produces = "application/json")
-	public ResponseEntity<?> getNumberOfAnnotationsForComponent(
-			@RequestParam String component,
-			@RequestParam String graph
-	) throws URISyntaxException {
-
-		JSONObject json = new JSONObject();
-		URI graphUri = URI.create(graph);
-
-		String sparqlGet ="" +
-				"PREFIX oa: <http://www.w3.org/ns/openannotation/core/>" +
-				"SELECT (COUNT(*) AS ?NumberOfAnnotations)" +
-				"(SAMPLE(STR(?componentname)) AS ?ComponentName)" +
-				"FROM <"+graph+">" +
-				"WHERE {    ?s oa:annotatedBy ?componentname .    " +
-				"FILTER REGEX(STR(?componentname), \""+component+"\") . " +
-				"}";
-
-		QanaryMessage qanaryMessage= new QanaryMessage( qanaryConfigurator.getEndpoint(), graphUri);
-		QanaryUtils qanaryUtils = new QanaryUtils(qanaryMessage);
-
-		try {
-			logger.info("fetching number of annotations with query: {}",sparqlGet);
-
-			ResultSet annotations = qanaryUtils.selectFromTripleStore(sparqlGet, this.qanaryConfigurator.getEndpoint().toString());
-			QuerySolution annotation = annotations.next();
-
-			int annotationCount = 0;
-			String componentUrl = null;
-
-			try {
-				annotationCount = annotation.get("NumberOfAnnotations").asLiteral().getInt();
-				componentUrl = annotation.get("ComponentName").asLiteral().getString();
-				logger.info("found {} annotations for component {} on graph {}",annotationCount,component,graph);
-			} catch (NullPointerException nullPointer) {
-				logger.info("No annotations were found for component {} on graph {}",component,graph);
-			}
-
-			json.put("annotationCount", annotationCount);
-			json.put("componentUrl", componentUrl);
-			json.put("usedGraph", graph);
-			json.put("usedQuery", sparqlGet);
-
-
-		} catch (SparqlQueryFailed queryFailed) {
-			logger.error(queryFailed.getMessage());
-		}
-
-		return new ResponseEntity<>(json, HttpStatus.OK);
 	}
 
 	/**
