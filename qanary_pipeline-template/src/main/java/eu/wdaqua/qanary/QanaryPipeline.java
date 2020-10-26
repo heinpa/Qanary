@@ -100,9 +100,8 @@ public class QanaryPipeline {
 			@Value("${spring.config.location}") String path) throws Exception {
 
 		Path localConfigPath = Paths.get(new ClassPathResource(path).getPath());
-		//String filePath = new File(path).getCanonicalPath();
 
-		logger.warn("new property source: {}", localConfigPath.toString());
+		logger.warn("new property source: {}", localConfigPath);
 		PropertiesConfiguration configuration = new PropertiesConfiguration(
 				new File(localConfigPath.toString()));
 		configuration.setReloadingStrategy(new FileChangedReloadingStrategy());

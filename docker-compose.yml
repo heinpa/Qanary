@@ -10,7 +10,7 @@ services:
       - "${PIPELINE_PORT}:8080"
     networks:
       pipeline:
-        - ipv4_address:
+        - ipv4_address: 172.25.0.2
 
   config-ui:
     build:
