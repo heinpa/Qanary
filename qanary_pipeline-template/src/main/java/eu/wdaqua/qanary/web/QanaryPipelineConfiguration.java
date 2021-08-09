@@ -39,7 +39,8 @@ public class QanaryPipelineConfiguration {
 			"qanary.triplestore", //
 			"qanary.questions.directory", //
 			"qanary.components", //
-			"qanary.ontology"};
+			"qanary.ontology", //
+			"rdf.vocabulary"};
 	private final String[] debugPropertiesPrefixesToBeShowOnStartup = { //
 			"qanary", //
 			"server", //
@@ -198,6 +199,14 @@ public class QanaryPipelineConfiguration {
 			return new URI(this.getProperty("qanary.ontology"));
 		} catch (Exception e) {
 			throw new MissingRequiredConfiguration("qanary.ontology");
+		}
+	}
+
+	public URI getRDFVocabularyAsURI() {
+		try {
+			return new URI(this.getProperty("rdf.vocabulary"));
+		} catch (Exception e) {
+			throw new MissingRequiredConfiguration("rdf.vocabulary");
 		}
 	}
 

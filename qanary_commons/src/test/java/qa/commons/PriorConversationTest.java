@@ -1,20 +1,17 @@
 package qa.commons;
 
 import eu.wdaqua.qanary.business.QanaryConfigurator;
-import eu.wdaqua.qanary.business.TriplestoreEndpointIdentifier;
 import eu.wdaqua.qanary.commons.QanaryQuestion;
 import eu.wdaqua.qanary.commons.QanaryUtils;
 import eu.wdaqua.qanary.exceptions.SparqlQueryFailed;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.mockito.exceptions.base.MockitoException;
-import org.springframework.web.client.RestTemplate;
 
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
-import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.Mockito.*;
@@ -34,6 +31,7 @@ class PriorConversationTest {
                     null,
                     null,
                     0,
+                    null,
                     null,
                     null,
                     null);

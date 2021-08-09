@@ -39,6 +39,7 @@ public class QanaryConfigurator {
 	private final URI endpoint;
 
 	private final URI qanaryOntology;
+	private final URI rdfVocabulary;
 
 	// parameter required to create the correct triplestore endpoint, particularly
 	// due to Stardog v5+
@@ -51,6 +52,7 @@ public class QanaryConfigurator {
 			int serverport, //
 			URI triplestoreendpoint, //
 			URI qanaryOntology, //
+			URI rdfVocabulary, //
 			TriplestoreEndpointIdentifier myTriplestoreEndpointIdentifier 
 	) {
 		this.restTemplate = restTemplate;
@@ -60,6 +62,7 @@ public class QanaryConfigurator {
 		this.host = serverhost;
 		this.endpoint = triplestoreendpoint;
 		this.qanaryOntology = qanaryOntology;
+		this.rdfVocabulary = rdfVocabulary;
 
 		logger.warn("make sure the triplestore is available at {}", triplestoreendpoint);
 	}
@@ -127,6 +130,10 @@ public class QanaryConfigurator {
 
 	public URI getQanaryOntology() {
 		return this.qanaryOntology;
+	}
+
+	public URI getRDFVocabulary() {
+		return this.rdfVocabulary;
 	}
 
 	public int getPort() {

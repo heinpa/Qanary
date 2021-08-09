@@ -89,7 +89,7 @@ public class QanaryQuestion<T> {
 
 		// Load the Open Annotation Ontology
 		sparqlquery = "" //
-				+ "LOAD <http://www.w3.org/ns/oa.rdf> " //
+				+ "LOAD <"+qanaryConfigurator.getRDFVocabulary()+"> " //
 				+ "INTO GRAPH " + namedGraphMarker;
 		logger.info("SPARQL query: {}", sparqlquery);
 		loadTripleStore(sparqlquery, qanaryConfigurator);
